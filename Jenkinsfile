@@ -1,23 +1,29 @@
 pipeline {
-  agent any
-  tools {
-    nodejs 'node-11.0.0'
-  }
+    agent any
+    parameters {
+        string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
 
-  options {
-    timeout(time: 2, unit: 'MINUTES')
-  }
+        text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
 
-  stages {
-    stage('Install dependencies') {
-      steps {
-        sh 'cd jenkins-tests && npm i'
-      }
+        booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
+
+        choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
+
+        password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
-    stage('Run tests') {
-      steps {
-        sh 'cd jenkins-tests && npm t'
-      }
+    stages {
+        stage('Example') {
+            steps {
+                echo "Hello ${params.PERSON}"
+
+                echo "Biography: ${params.BIOGRAPHY}"
+
+                echo "Toggle: ${params.TOGGLE}"
+
+                echo "Choice: ${params.CHOICE}"
+
+                echo "Password: ${params.PASSWORD}"
+            }
+        }
     }
-  }
 }
