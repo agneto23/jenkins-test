@@ -29,16 +29,22 @@ pipeline {
     }
     stages {
         stage("Deployment Parameters") {
-            steps {
-                timeout(time: 30, unit: 'SECONDS') {
-                    script {
-                        // Show the select input modal
-                       def INPUT_PARAMS = input message: 'Please Provide Parameters', ok: 'Next',
-                                        parameters: [
-                                        choice(name: 'VERSION_TAG', choices: getVersionTags(), description: 'Available versions')]
-                        env.VERSION_TAG = INPUT_PARAMS.VERSION_TAG
-                    }
+            timeout(time: 30, unit: 'SECONDS') {
+                
+                input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                submitter "alice,bob"
+                parameters {
+                    choice(name: 'VERSION_TAG', choices: getVersionTags(), description: 'Available versions')
                 }
+            }
+                
+            }
+            steps {
+            
+                echo "Hello, ${VERSION_TAG}, nice to meet you."
+
             }
         }
         stage('Example') {
@@ -52,7 +58,7 @@ pipeline {
 
                     echo "Choice: ${params.CHOICE}"
 
-                    echo "Version tag: ${env.VERSION_TAG}"
+                    echo "Version tag: ${VERSION_TAG}"
                 }
             }
         }
