@@ -38,8 +38,8 @@ pipeline {
         
         stage("Deployment Parameters") {                
             input {
-                message "Should we continue?"
-                ok "Yes, we should."
+                message "Please Provide Parameters"
+                ok "Ok"
                 submitter "alice,bob"
                 parameters {
                     choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
@@ -47,7 +47,7 @@ pipeline {
             }
             steps {
             
-                echo "Hello, ${VERSION_TAG}, nice to meet you."
+                echo "Version exec: ${VERSION_TAG}"
 
             }
         }
