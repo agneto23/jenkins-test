@@ -1,5 +1,5 @@
 import groovy.json.JsonSlurper
-def getDockerImages() {
+def getVersionTags() {
     final API_KEY = "FOOBARAPIKEY"
     final REPO_NAME = "service-docker"
     final APP_NAME = "myapp"
@@ -24,26 +24,32 @@ pipeline {
 
         text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
 
-        booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
-
         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
                                         
-        choice(name: 'IMAGE_TAG', choices: getDockerImages(), description: 'Available Docker Images')
-
-        password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
     stages {
+        stage("Deployment Parameters") {
+            steps {
+                timeout(time: 30, unit: 'SECONDS') {
+                    script {
+                        // Show the select input modal
+                       def INPUT_PARAMS = input message: 'Please Provide Parameters', ok: 'Next',
+                                        parameters: [
+                                        choice(name: 'VERSION_TAG', choices: getVersionTags(), description: 'Available versions')]
+                        env.IMAGE_TAG = INPUT_PARAMS.IMAGE_TAG
+                    }
+                }
+            }
+        }
         stage('Example') {
             steps {
                 echo "Hello ${params.PERSON}"
 
                 echo "Biography: ${params.BIOGRAPHY}"
 
-                echo "Toggle: ${params.TOGGLE}"
-
                 echo "Choice: ${params.CHOICE}"
 
-                echo "Password: ${params.PASSWORD}"
+                echo "Version tag: ${params.VERSION_TAG}"
             }
         }
     }
