@@ -13,7 +13,7 @@ def getDockerImages() {
     if (json.values == null || json.values.size == 0)
       tags.add("unable to fetch tags for ${APP_NAME}")
     else
-      tags.addAll(json.tags)
+      tags.addAll(json.values)
     return tags.join('\n')
 }
 
