@@ -49,7 +49,7 @@ pipeline {
 
                 echo "Choice: ${params.CHOICE}"
 
-                echo "Version tag: ${params.VERSION_TAG}"
+                echo "Version tag: ${env.VERSION_TAG}"
             }
         }
     }
