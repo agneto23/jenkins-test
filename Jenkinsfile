@@ -28,7 +28,7 @@ pipeline {
 
         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
                                         
-        choice(name: 'IMAGE_TAG', choices: getDockerImages(), description: 'Available Docker Images'),
+        choice(name: 'IMAGE_TAG', choices: getDockerImages(), description: 'Available Docker Images')
 
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
