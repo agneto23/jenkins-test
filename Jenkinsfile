@@ -28,18 +28,14 @@ pipeline {
                                         
     }
     stages {
-        stage("Deployment Parameters") {
-            timeout(time: 30, unit: 'SECONDS') {
-                
-                input {
+        stage("Deployment Parameters") {                
+            input {
                 message "Should we continue?"
                 ok "Yes, we should."
                 submitter "alice,bob"
                 parameters {
                     choice(name: 'VERSION_TAG', choices: getVersionTags(), description: 'Available versions')
-                }
-            }
-                
+                }                
             }
             steps {
             
