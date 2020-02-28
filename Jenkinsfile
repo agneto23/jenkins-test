@@ -1,7 +1,11 @@
 import groovy.json.JsonSlurper
-def getVersionTags() {
+def getVersionTags(username) {
 
-    def cmd = [ 'bash', '-c', "curl https://api.bitbucket.org/2.0/repositories/caaguilarn/${env.JOB_NAME}/refs/tags".toString()]
+    final APP_NAME = "jenkins-test"
+    
+    final USER_NAME = username
+
+    def cmd = [ 'bash', '-c', "curl https://api.bitbucket.org/2.0/repositories/${USER_NAME}/${APP_NAME}/refs/tags".toString()]
     def result = cmd.execute().text
 
     def slurper = new JsonSlurper()
@@ -38,7 +42,7 @@ pipeline {
                 ok "Yes, we should."
                 submitter "alice,bob"
                 parameters {
-                    choice(name: 'VERSION_TAG', choices: getVersionTags(), description: 'Available versions')
+                    choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
                 }                
             }
             steps {
