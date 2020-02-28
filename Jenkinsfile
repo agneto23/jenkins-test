@@ -36,7 +36,7 @@ pipeline {
                        def INPUT_PARAMS = input message: 'Please Provide Parameters', ok: 'Next',
                                         parameters: [
                                         choice(name: 'VERSION_TAG', choices: getVersionTags(), description: 'Available versions')]
-                        env.IMAGE_TAG = INPUT_PARAMS.IMAGE_TAG
+                        env.VERSION_TAG = INPUT_PARAMS.VERSION_TAG
                     }
                 }
             }
