@@ -43,13 +43,17 @@ pipeline {
         }
         stage('Example') {
             steps {
-                echo "Hello ${params.PERSON}"
+                
+                script {
+                
+                    echo "Hello ${params.PERSON}"
 
-                echo "Biography: ${params.BIOGRAPHY}"
+                    echo "Biography: ${params.BIOGRAPHY}"
 
-                echo "Choice: ${params.CHOICE}"
+                    echo "Choice: ${params.CHOICE}"
 
-                echo "Version tag: ${env.VERSION_TAG}"
+                    echo "Version tag: ${env.VERSION_TAG}"
+                }
             }
         }
     }
