@@ -52,4 +52,34 @@ pipeline {
             }
         }
     }
+    
+    post {
+		always {
+			echo "Pipeline finalizado del repositorio"
+		}
+		success {
+			echo 'La linea de construccion finalizo exitosamente'
+			slackSend(
+				channel: "testchannel",
+				color: "good",
+				message: ":simple_smile::computer: *ÉXITO EN CONSTRUCCIÓN* en construcción"
+			)
+		}        
+		failure {
+			echo "La linea de construccion finalizo con errores "
+			slackSend (
+				channel: "testchannel", 
+				color: "danger", 
+				message: ":disappointed_relieved::sos: *ERROR EN CONSTRUCCIÓN* en construcción"
+			)
+		}
+		unstable {
+			echo 'La linea de construccion finalizo de forma inestable' 
+			slackSend (
+				channel: "testchannel", 
+				color: "warning", 
+				message: ":worried::warning: *ALERTA CONSTRUCCIÓN INESTABLE* en construcción"
+			)
+		}
+	}
 }
