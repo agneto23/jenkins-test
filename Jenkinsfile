@@ -42,19 +42,25 @@ pipeline {
         }
         
         stage("Deployment Parameters") {
-            timeout(time: 30, unit: 'SECONDS') {
-                input {
-                    message "Please Provide Parameters"
-                    ok "Ok"
-                    submitter "alice,bob"
-                    parameters {
-                        choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
-                    }                
-                }
+        
+            options {
+              timeout(time: 30, unit: 'SECONDS') 
             }
-            steps {
             
-                echo "Version exec: ${VERSION_TAG}"
+            input {
+                message "Please Provide Parameters"
+                ok "Ok"
+                submitter "alice,bob"
+                parameters {
+                    choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
+                }                
+            }
+            
+            steps {
+             
+                env.IMAGE_TAG = ${VERSION_TAG}"
+            
+                echo "Version exec: ${env.IMAGE_TAG}"
 
             }
         }
