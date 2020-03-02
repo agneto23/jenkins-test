@@ -63,9 +63,9 @@ pipeline {
             
             steps {
              
-                env.IMAGE_TAG = VERSION_TAG
+                IMAGE_TAG = VERSION_TAG
             
-                echo "Version exec: ${env.IMAGE_TAG}"
+                echo "Version exec: ${IMAGE_TAG}"
 
             }
         }
