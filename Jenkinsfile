@@ -67,9 +67,27 @@ pipeline {
 
             }
         }
+
+        stage('Example Test') {
+            agent {
+                docker {
+                    image 'katalonstudio/katalon'
+                    args "-u root"
+                }
+            }
+            steps {
+                sh 'katalon-execute.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="test/TS_RegressionTest"'
+            }
+        }
     }
     
     post {
+
+        always {
+            archiveArtifacts artifacts: 'report/**/*.*', fingerprint: true
+            junit 'report/**/JUnit_Report.xml'
+        }
+
 		success {
 			echo 'Success job'
 			slackSend(
