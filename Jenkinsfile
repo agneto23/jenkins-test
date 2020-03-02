@@ -24,6 +24,11 @@ pipeline {
     parameters {
         string(name: 'USERNAME', defaultValue: 'MrJenkins', description: 'Username repository')                                        
     }
+    
+    triggers {
+        bitbucketPush()
+    }
+    
     stages {
         stage('Example') {
             steps {
