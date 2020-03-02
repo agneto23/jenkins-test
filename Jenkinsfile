@@ -22,7 +22,7 @@ def getVersionTags(username) {
 pipeline {
     agent any
     parameters {
-        string(name: 'USERNAME', defaultValue: 'MrJenkins', description: 'Username repository')                                        
+        string(name: 'USERNAME', defaultValue: 'mrjenkins', description: 'Username repository')                                        
     }
     
     triggers {
@@ -41,14 +41,16 @@ pipeline {
             }
         }
         
-        stage("Deployment Parameters") {                
-            input {
-                message "Please Provide Parameters"
-                ok "Ok"
-                submitter "alice,bob"
-                parameters {
-                    choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
-                }                
+        stage("Deployment Parameters") {
+            timeout(time: 30, unit: 'SECONDS') {
+                input {
+                    message "Please Provide Parameters"
+                    ok "Ok"
+                    submitter "alice,bob"
+                    parameters {
+                        choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
+                    }                
+                }
             }
             steps {
             
