@@ -20,7 +20,7 @@ def getVersionTags(username) {
 }
 
 pipeline {
-    agent any
+    agent none
     
     environment {
         IMAGE_TAG = 'latest'
@@ -36,6 +36,9 @@ pipeline {
     
     stages {
         stage('Example') {
+
+            agent any
+            
             steps {
                 
                 script {
@@ -47,6 +50,8 @@ pipeline {
         }
         
         stage("Deployment Parameters") {
+
+            agent any
         
             options {
               timeout(time: 30, unit: 'SECONDS') 
