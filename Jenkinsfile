@@ -38,7 +38,7 @@ pipeline {
         stage('Example') {
 
             agent any
-            
+
             steps {
                 
                 script {
@@ -74,6 +74,9 @@ pipeline {
         }
 
         stage('Example Test') {
+            tools {
+                docker 'latest'
+            }
             agent {
                 docker {
                     image 'katalonstudio/katalon'
