@@ -21,6 +21,11 @@ def getVersionTags(username) {
 
 pipeline {
     agent any
+    
+    environment {
+        IMAGE_TAG = 'latest'
+    }
+    
     parameters {
         string(name: 'USERNAME', defaultValue: 'mrjenkins', description: 'Username repository')                                        
     }
