@@ -62,10 +62,8 @@ pipeline {
             }
             
             steps {
-             
-                IMAGE_TAG = VERSION_TAG
-            
-                echo "Version exec: ${IMAGE_TAG}"
+                         
+                echo "Version exec: ${VERSION_TAG}"
 
             }
         }
