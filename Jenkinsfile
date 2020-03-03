@@ -49,7 +49,7 @@ pipeline {
             }
         }
         
-        stage("Deployment Parameters") {
+        stage("Deployment parameters") {
 
             agent any
         
@@ -73,10 +73,7 @@ pipeline {
             }
         }
 
-        stage('Example Test') {
-            tools {
-                docker 'latest'
-            }
+        stage('Docker katalon test') {
             agent {
                 docker {
                     image 'katalonstudio/katalon'
