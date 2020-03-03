@@ -76,15 +76,13 @@ pipeline {
 
         stage('Docker katalon test') {
             agent {
-                    docker { image 'node:7-alpine' }
+                docker {
+                    image 'katalonstudio/katalon'
+                    args "-u root"
                 }
-
-            stages {
-                stage('Test') {
-                    steps {
-                        sh 'node --version'
-                    }
-                }
+            }
+            steps {
+                sh 'katalon-execute.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="test/TS_RegressionTest"'
             }
         }
     }
