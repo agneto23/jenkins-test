@@ -89,10 +89,8 @@ pipeline {
                   - name: katalon
                     image: katalonstudio/katalon
                     imagePullPolicy: IfNotPresent
-                    securityContext:
-                      privileged: true
                     args:
-                    - -u root
+                    - cat
                     tty: true
                 """
                 }
