@@ -98,7 +98,7 @@ pipeline {
             steps {
                 container('katalon') {
                 echo 'Start katalon'
-                      sh 'katalonc.sh -projectPath="/home/jenkins/agent/workspace/jenkins-test_master/logintest" -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/test" -apiKey="3b797533-5ddf-4fb5-9966-26afd9972d9a"'
+                      sh 'katalonc.sh -projectPath="/home/jenkins/agent/workspace/jenkins-test_master/logintest" -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/test" -apiKey="157a1122-1fdd-4add-956a-90013bdaf6fc"'
                 }
             }
         }
