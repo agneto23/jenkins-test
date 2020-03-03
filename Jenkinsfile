@@ -94,8 +94,8 @@ pipeline {
                 }
             }
             steps {
-                container('docker') {
-                echo 'Start build docker'
+                container('katalon') {
+                echo 'Start katalon'
                       sh 'katalon-execute.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="test/TS_RegressionTest"'
                 }
             }
@@ -104,10 +104,10 @@ pipeline {
     
     post {
 
-        always {
-            archiveArtifacts artifacts: 'report/**/*.*', fingerprint: true
-            junit 'report/**/JUnit_Report.xml'
-        }
+//         always {
+//             archiveArtifacts artifacts: 'report/**/*.*', fingerprint: true
+//             junit 'report/**/JUnit_Report.xml'
+//         }
 
 		success {
 			echo 'Success job'
