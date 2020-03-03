@@ -48,7 +48,7 @@ podTemplate(label: 'continuous-delivery-builder',
 
     stage ('Test') { 
       container('katalon') {
-        sh 'katalon-execute.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/TS_RegressionTest"'
+        sh 'katalon-execute.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="test/TS_RegressionTest"'
         //sh 'katalonc.sh -projectPath=. -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/TS_RegressionTest"'
       }
     }
