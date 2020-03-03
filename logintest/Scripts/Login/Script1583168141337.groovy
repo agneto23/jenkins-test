@@ -26,7 +26,5 @@ WebUI.setEncryptedText(findTestObject('Object Repository/Page_Menu Principal/inp
 
 WebUI.click(findTestObject('Object Repository/Page_Menu Principal/input_Olvid su contrasea_login'))
 
-WebUI.click(findTestObject('Object Repository/Page_Menu Principal/a_Cerrar sesin'))
-
 WebUI.closeBrowser()
 
