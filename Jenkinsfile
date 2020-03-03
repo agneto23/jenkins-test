@@ -1,113 +1,58 @@
-import groovy.json.JsonSlurper
-def getVersionTags(username) {
 
-    final APP_NAME = "jenkins-test"
-    
-    final USER_NAME = username
+podTemplate(label: 'continuous-delivery-builder', 
+  containers: [
+    containerTemplate(
+      name: 'jnlp',
+      image: 'jenkinsci/jnlp-slave:3.10-1-alpine',
+      args: '${computer.jnlpmac} ${computer.name}'
+    ),
+    containerTemplate(
+      name: 'alpine',
+      image: 'twistian/alpine:latest',
+      command: 'cat',
+      ttyEnabled: true
+    ),
+    containerTemplate(
+      name: 'katalon',
+      image: 'katalonstudio/katalon',
+      command: 'cat',
+      ttyEnabled: true
+    ),
+  ],
+  volumes: [ 
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+  ]
+)
+{
+  node ('continuous-delivery-builder') {
 
-    def cmd = [ 'bash', '-c', "curl https://api.bitbucket.org/2.0/repositories/${USER_NAME}/${APP_NAME}/refs/tags".toString()]
-    def result = cmd.execute().text
+ //   stage('Apply Kubernetes files') {
+ //     withKubeConfig([credentialsId: 'devops-k8s', ]) {
+ //       sh 'kubectl config view'
+        // switch context from default to target environment
+        // sh "kubectl config use-context ${contextName}"
+        // deploy the resources (without pushing)
+        // sh 'kubectl apply -k .'
+        // wait for deployment to complete
+        // sh "kubectl rollout status deployment/${projectName} --timeout=2m"
+ //     }
+ //   }
+//     stage('Apply Kubernetes files') {
+//       steps {
+//         withKubeConfig([credentialsId: 'devops-k8s' , ]) {
+//             sh 'kubectl get pods'
+//             sh 'helm get mkp-int --tiller-namespace mkp-int'
+//           }
+//       }
+//     }
 
-    def slurper = new JsonSlurper()
-    def json = slurper.parseText(result)
-    def tags = new ArrayList()
-    if (json.values == null || json.values.size == 0)
-      tags.add("unable to fetch tags for ${env.JOB_NAME}")
-    else
-      tags.addAll(json.values.name)
-    return tags.join('\n')
-    
-}
-
-pipeline {
-    agent none
-    
-    environment {
-        IMAGE_TAG = 'latest'
+    stage ('Test') { 
+      container('katalon') {
+        sh 'katalon-execute.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/TS_RegressionTest"'
+        //sh 'katalonc.sh -projectPath=. -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/TS_RegressionTest"'
+      }
     }
-    
-    parameters {
-        string(name: 'USERNAME', defaultValue: 'mrjenkins', description: 'Username repository')                                        
-    }
-    
-    triggers {
-        bitbucketPush()
-    }
-    
-    stages {
-        stage('Example') {
 
-            agent any
 
-            steps {
-                
-                script {
-                
-                    echo "Hello ${params.USERNAME}"
-                    
-                }
-            }
-        }
-        
-        stage("Deployment parameters") {
-
-            agent any
-        
-            options {
-              timeout(time: 30, unit: 'SECONDS') 
-            }
-            
-            input {
-                message "Please Provide Parameters"
-                ok "Ok"
-                submitter "alice,bob"
-                parameters {
-                    choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
-                }                
-            }
-            
-            steps {
-                         
-                echo "Version exec: ${VERSION_TAG}"
-
-            }
-        }
-
-        stage('Docker katalon test') {
-            agent {
-                docker {
-                    image 'katalonstudio/katalon'
-                    args "-u root"
-                }
-            }
-            steps {
-                sh 'katalon-execute.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="test/TS_RegressionTest"'
-            }
-        }
-    }
-    
-    post {
-
-        always {
-            archiveArtifacts artifacts: 'report/**/*.*', fingerprint: true
-            junit 'report/**/JUnit_Report.xml'
-        }
-
-		success {
-			echo 'Success job'
-			slackSend(
-				channel: "testchannel",
-				color: "good",
-				message: ":Success"
-			)
-		}        
-		failure {
-			echo "Error job"
-			slackSend (
-				channel: "testchannel", 
-				color: "danger", 
-				message: "Error"
-			)
-		}
-	}
+  }
 }
