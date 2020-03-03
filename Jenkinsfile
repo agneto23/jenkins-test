@@ -98,7 +98,7 @@ pipeline {
             steps {
                 container('katalon') {
                 echo 'Start katalon'
-                      sh 'katalon-execute.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="test/TS_RegressionTest"'
+                      sh 'katalonc.sh -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="test/TS_RegressionTest"'
                 }
             }
         }
