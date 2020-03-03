@@ -24,6 +24,7 @@ pipeline {
     
     environment {
         IMAGE_TAG = 'latest'
+        docker = tool 'dockertest';
     }
     
     parameters {
