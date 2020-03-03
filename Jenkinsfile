@@ -82,14 +82,25 @@ pipeline {
                 kind: Pod
                 metadata:
                   labels:
-                    katalon-test: katalon-test
+                    jenkins-agent: katalon-jnlp-slave
+                    jenkins/katalon-slave: true
                 spec:
                   containers:
-                  - name: katalon
-                      image: katalonstudio/katalon
-                      command:
-                      - cat
-                      tty: true
+                  - name: katalon-build-env
+                    image: katalonstudio/katalon
+                    imagePullPolicy: IfNotPresent
+                    securityContext:
+                      privileged: true
+                    args:
+                    - -u root
+                    tty: true
+                    resources:
+                      requests:
+                        memory: "500Mi"
+                        cpu: "500m"
+                      limits:
+                        memory: "1000Mi"
+                        cpu: "1000m"
                 """
                 }
             }
