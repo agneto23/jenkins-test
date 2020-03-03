@@ -76,7 +76,7 @@ pipeline {
         stage('Docker katalon test') {
             agent {
                 kubernetes {
-                      label 'test-slave'
+                      label 'continuous-delivery-builder'
                       yaml """
                 apiVersion: v1
                 kind: Pod
@@ -86,7 +86,7 @@ pipeline {
                     jenkins/katalon-slave: true
                 spec:
                   containers:
-                  - name: katalon-build-env
+                  - name: katalon
                     image: katalonstudio/katalon
                     imagePullPolicy: IfNotPresent
                     securityContext:
@@ -94,13 +94,6 @@ pipeline {
                     args:
                     - -u root
                     tty: true
-                    resources:
-                      requests:
-                        memory: "500Mi"
-                        cpu: "500m"
-                      limits:
-                        memory: "1000Mi"
-                        cpu: "1000m"
                 """
                 }
             }
