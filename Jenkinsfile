@@ -75,7 +75,6 @@ pipeline {
 
         stage('Docker katalon test') {
             agent {
-                label 'continuous-delivery-builder'
                 kubernetes {
                       label 'continuous-delivery-builder'
                       yaml """
@@ -111,7 +110,7 @@ pipeline {
 //             archiveArtifacts artifacts: 'logintest/reports/**/*.*', fingerprint: true
 //             junit 'logintest/reports/**/JUnit_Report.xml'
 
-            node('continuous-delivery-builder') {
+            node('kubernetes') {
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'logintest/Reports', reportFiles: 'index.html', reportName: 'Katalon Report', reportTitles: ''])
             }
         }
