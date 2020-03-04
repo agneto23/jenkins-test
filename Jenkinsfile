@@ -107,8 +107,10 @@ pipeline {
     post {
 
         always {
-            archiveArtifacts artifacts: 'logintest/reports/**/*.*', fingerprint: true
-            junit 'logintest/reports/**/JUnit_Report.xml'
+//             archiveArtifacts artifacts: 'logintest/reports/**/*.*', fingerprint: true
+//             junit 'logintest/reports/**/JUnit_Report.xml'
+
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'reporttest', reportFiles: 'index.html', reportName: 'Katalon Report', reportTitles: ''])
         }
 
 		success {
