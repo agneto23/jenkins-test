@@ -75,6 +75,7 @@ pipeline {
 
         stage('Docker katalon test') {
             agent {
+                label 'continuous-delivery-builder'
                 kubernetes {
                       label 'continuous-delivery-builder'
                       yaml """
