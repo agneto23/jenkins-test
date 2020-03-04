@@ -6,6 +6,7 @@
    <UUID>e2c1200d-373c-47bd-a96a-83972a3a61a4</UUID>
    <migratedVersion>5.9.0</migratedVersion>
    <pageLoadTimeout>0</pageLoadTimeout>
+   <projectFileLocation>/home/caguilar/Katalon Studio/Login smx/Login smx.prj</projectFileLocation>
    <sourceContent>
       <sourceFolderList>
          <sourceFolderConfiguration>
