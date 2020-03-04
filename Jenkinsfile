@@ -107,8 +107,12 @@ pipeline {
     post {
 
         always {
-            archiveArtifacts artifacts: 'Reports/**/*.*', fingerprint: true
-            junit 'Reports/**/JUnit_Report.xml'
+//             archiveArtifacts artifacts: 'reports/**/*.*', fingerprint: true
+//             junit 'reports/**/JUnit_Report.xml'
+//
+            node('master') {
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/home/jenkins/agent/workspace/jenkins-test_master/logintest/Reports', reportFiles: 'index.html', reportName: 'Katalon Report', reportTitles: ''])
+            }
         }
 
 		success {
