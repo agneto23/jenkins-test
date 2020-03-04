@@ -39,10 +39,18 @@ pipeline {
     stages {
 
         stage('JIRA') {
-            def serverInfo = jiraGetServerInfo()
-            echo serverInfo.data.toString()
+
+            agent any
+
+            script {
+
+                def serverInfo = jiraGetServerInfo()
+                echo serverInfo.data.toString()
+
+            }
+
         }
-        
+
         stage('Example') {
 
             agent any
