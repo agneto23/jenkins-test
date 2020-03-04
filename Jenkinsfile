@@ -101,19 +101,15 @@ pipeline {
                       sh 'katalonc.sh -projectPath="/home/jenkins/agent/workspace/jenkins-test_master/logintest" -browserType="Chrome" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/test" -apiKey="ae74a191-2cb0-4cf0-a61e-1b1d4ffd5774"'
                 }
             }
-
-            always {
-                        archiveArtifacts artifacts: 'reports/**/*.*', fingerprint: true
-                        junit 'reports/**/JUnit_Report.xml'
-
-            //             node('master') {
-            //                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'logintest/Reports', reportFiles: 'index.html', reportName: 'Katalon Report', reportTitles: ''])
-            //             }
-            }
         }
     }
     
     post {
+
+        always {
+            archiveArtifacts artifacts: 'Reports/**/*.*', fingerprint: true
+            junit 'Reports/**/JUnit_Report.xml'
+        }
 
 		success {
 			echo 'Success job'
