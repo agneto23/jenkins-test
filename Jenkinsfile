@@ -110,7 +110,7 @@ pipeline {
 //             archiveArtifacts artifacts: 'logintest/reports/**/*.*', fingerprint: true
 //             junit 'logintest/reports/**/JUnit_Report.xml'
 
-            node('kubernetes') {
+            node('master') {
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'logintest/Reports', reportFiles: 'index.html', reportName: 'Katalon Report', reportTitles: ''])
             }
         }
