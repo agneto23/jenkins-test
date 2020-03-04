@@ -59,8 +59,8 @@ pipeline {
                         echo error
                     }
 
-                    def serverInfo = jiraGetServerInfo()
-                    echo serverInfo.data.toString()
+//                     def serverInfo = jiraGetServerInfo()
+//                     echo serverInfo.data.toString()
 
                 }
             }
