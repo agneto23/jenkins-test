@@ -42,13 +42,15 @@ pipeline {
 
             agent any
 
-            script {
+            steps {
 
-                def serverInfo = jiraGetServerInfo()
-                echo serverInfo.data.toString()
+                script {
 
+                    def serverInfo = jiraGetServerInfo()
+                    echo serverInfo.data.toString()
+
+                }
             }
-
         }
 
         stage('Example') {
