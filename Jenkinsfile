@@ -75,26 +75,24 @@ pipeline {
 
         stage('Docker katalon test') {
             agent {
-                node('palkatalon') {
-                    kubernetes {
-                          label 'continuous-delivery-builder'
-                          yaml """
-                    apiVersion: v1
-                    kind: Pod
-                    metadata:
-                      labels:
-                        jenkins-agent: katalon-jnlp-slave
-                        jenkins/katalon-slave: true
-                    spec:
-                      containers:
-                      - name: katalon
-                        image: katalonstudio/katalon
-                        imagePullPolicy: IfNotPresent
-                        args:
-                        - cat
-                        tty: true
-                    """
-                    }
+                kubernetes {
+                      label 'continuous-delivery-builder'
+                      yaml """
+                apiVersion: v1
+                kind: Pod
+                metadata:
+                  labels:
+                    jenkins-agent: katalon-jnlp-slave
+                    jenkins/katalon-slave: true
+                spec:
+                  containers:
+                  - name: katalon
+                    image: katalonstudio/katalon
+                    imagePullPolicy: IfNotPresent
+                    args:
+                    - cat
+                    tty: true
+                """
                 }
             }
             steps {
@@ -112,10 +110,9 @@ pipeline {
 //             archiveArtifacts artifacts: 'logintest/reports/**/*.*', fingerprint: true
 //             junit 'logintest/reports/**/JUnit_Report.xml'
 
-            node('palkatalon') {
+            node('continuous-delivery-builder') {
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'logintest/Reports', reportFiles: 'index.html', reportName: 'Katalon Report', reportTitles: ''])
             }
-
         }
 
 		success {
