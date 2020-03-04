@@ -33,8 +33,16 @@ pipeline {
     triggers {
         bitbucketPush()
     }
+
+
     
     stages {
+
+        stage('JIRA') {
+            def serverInfo = jiraGetServerInfo()
+            echo serverInfo.data.toString()
+        }
+        
         stage('Example') {
 
             agent any
