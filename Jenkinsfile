@@ -82,7 +82,7 @@ pipeline {
 
                     def resultComments = new ArrayList()
 
-                    if (comments.comments == null || comments.comments.size == 0)
+                    if (comments.data.comments == null || comments.data.comments.size == 0)
                         resultComments.add("unable to fetch comments for ${env.JOB_NAME}")
                     else
                         resultComments.addAll(json.comments.body)
