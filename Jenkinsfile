@@ -46,8 +46,13 @@ pipeline {
             steps {
 
                 script {
+                
                     def serverInfo = jiraGetServerInfo site: 'jirakruger', failOnError: true
                     echo serverInfo.data.toString()
+
+                    def comments = jiraGetComments idOrKey: 'KISD-640', site: 'jirakruger', failOnError: true
+                    echo comments.data.toString()
+
                 }
             }
         }
