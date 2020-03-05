@@ -46,7 +46,7 @@ pipeline {
             steps {
 
                 script {
-                    def serverInfo = jiraGetServerInfo site: 'LOCAL', failOnError: true
+                    def serverInfo = jiraGetServerInfo site: 'jirakruger', failOnError: true
                     echo serverInfo.data.toString()
                 }
             }
