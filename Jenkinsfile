@@ -85,7 +85,7 @@ pipeline {
                     if (comments.data.comments == null || comments.data.comments.size == 0)
                         resultComments.add("unable to fetch comments for ${env.JOB_NAME}")
                     else
-                        resultComments.addAll(comments.data.comments)
+                        resultComments.addAll(comments.data.comments.body)
 
                     echo resultComments.toString()
 
