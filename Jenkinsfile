@@ -36,41 +36,55 @@ pipeline {
     }
 
 
-    
+
     stages {
-
-        stage('JIRA') {
-
-            agent any
-
-            steps {
-
-                script {
-                
-                    def serverInfo = jiraGetServerInfo site: 'jirakruger', failOnError: true
-                    echo serverInfo.data.toString()
-
-                    def comments = jiraGetComments idOrKey: 'KISD-640', site: 'jirakruger', failOnError: true
-                    echo comments.data.toString()
-
-                }
-            }
-        }
 
         stage('Example') {
 
             agent any
 
             steps {
-                
+
                 script {
-                
+
                     echo "Hello ${params.USERNAME}"
-                    
+
                 }
             }
         }
-        
+
+        stage("Jira parameters") {
+
+            agent any
+
+            options {
+              timeout(time: 30, unit: 'SECONDS')
+            }
+
+            input {
+                message "Please Provide Parameters"
+                ok "Ok"
+                submitter "alice,bob"
+                parameters {
+                    string(name: 'KEY_ISSUE', description: 'Key issue')
+                }
+            }
+
+            steps {
+
+                script {
+
+                    def serverInfo = jiraGetServerInfo site: 'jirakruger', failOnError: true
+                    echo serverInfo.data.toString()
+
+                    def comments = jiraGetComments idOrKey: '"${KEY_ISSUE}"', site: 'jirakruger', failOnError: true
+                    echo comments.data.toString()
+
+                }
+
+            }
+        }
+
         stage("Deployment parameters") {
 
             agent any
