@@ -77,7 +77,9 @@ pipeline {
                     def serverInfo = jiraGetServerInfo site: 'jirakruger', failOnError: true
                     echo serverInfo.data.toString()
 
-                    def comments = jiraGetComments idOrKey: '"${KEY_ISSUE}"', site: 'jirakruger', failOnError: true
+                    def issueKey = "${KEY_ISSUE}"
+
+                    def comments = jiraGetComments idOrKey: issueKey, site: 'jirakruger', failOnError: true
                     echo comments.data.toString()
 
                 }
