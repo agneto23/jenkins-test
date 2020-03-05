@@ -39,17 +39,17 @@ pipeline {
     
     stages {
 
-        stage('JIRA') {
-
-            agent any
-
-            steps {
-
-                script {
-
-                }
-            }
-        }
+//         stage('JIRA') {
+//
+//             agent any
+//
+//             steps {
+//
+//                 script {
+//
+//                 }
+//             }
+//         }
 
         stage('Example') {
 
