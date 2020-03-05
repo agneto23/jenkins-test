@@ -35,8 +35,6 @@ pipeline {
         bitbucketPush()
     }
 
-
-
     stages {
 
         stage('Example') {
@@ -81,6 +79,17 @@ pipeline {
 
                     def comments = jiraGetComments idOrKey: issueKey, site: 'jirakruger', failOnError: true
                     echo comments.data.toString()
+
+                    def slurper = new JsonSlurper()
+                    def json = slurper.parseText(comments)
+                    def resultComments = new ArrayList()
+
+                    if (json.comments == null || json.comments.size == 0)
+                        resultComments.add("unable to fetch comments for ${env.JOB_NAME}")
+                    else
+                        resultComments.addAll(json.comments.body)
+
+                    echo resultComments
 
                 }
 
