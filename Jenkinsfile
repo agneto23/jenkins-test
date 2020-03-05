@@ -73,7 +73,7 @@ pipeline {
                 script {
 
                     def serverInfo = jiraGetServerInfo site: 'jirakruger', failOnError: true
-                    echo serverInfo.data.toString()
+//                     echo serverInfo.data.toString()
 
                     def issueKey = "${KEY_ISSUE}"
 
