@@ -20,12 +20,6 @@ def getVersionTags(username) {
     
 }
 
-def response = jiraGetComponent id: 10000
-  echo response.successful
-  echo response.code
-  echo response.error
-  echo response.data.toString()
-
 pipeline {
     agent none
     
@@ -52,15 +46,6 @@ pipeline {
             steps {
 
                 script {
-
-                    try {
-                        jiraGetComponent id: 10000
-                    } catch (error) {
-                        echo error
-                    }
-
-//                     def serverInfo = jiraGetServerInfo()
-//                     echo serverInfo.data.toString()
 
                 }
             }
@@ -98,8 +83,14 @@ pipeline {
             }
             
             steps {
-                         
-                echo "Version exec: ${VERSION_TAG}"
+
+                script {
+
+                    env.VERSION_TAG = "${VERSION_TAG}"
+
+                    echo "Version exec: ${env.VERSION_TAG}"
+
+                }
 
             }
         }
