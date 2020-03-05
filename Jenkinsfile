@@ -87,7 +87,7 @@ pipeline {
                     else
                         resultComments.addAll(comments.data.comments)
 
-                    echo resultComments
+                    echo resultComments.toString()
 
                 }
 
