@@ -151,7 +151,7 @@ pipeline {
 
                     sh "pwd"
 
-                    if (fileExists "end-to-end") {
+                    if (fileExists("end-to-end")) {
 
                         sh "pwd"
 
