@@ -20,7 +20,6 @@ def getVersionTags(username) {
     
 }
 
-def exists = fileExists 'end-to-end'
 
 pipeline {
     agent none
@@ -152,7 +151,7 @@ pipeline {
 
                     sh "pwd"
 
-                    if (exists) {
+                    if (fileExists 'end-to-end') {
 
                         sh "pwd"
 
