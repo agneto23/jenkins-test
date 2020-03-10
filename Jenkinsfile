@@ -157,7 +157,7 @@ pipeline {
 
                         echo 'Start katalon'
 
-                        sh 'katalonc.sh -projectPath="./logintest" -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/test" -apiKey="ae74a191-2cb0-4cf0-a61e-1b1d4ffd5774" -sendMail=caguilar@ec.krugercorp.com'
+                        sh 'katalonc.sh -projectPath="." -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/test" -apiKey="ae74a191-2cb0-4cf0-a61e-1b1d4ffd5774" -sendMail=caguilar@ec.krugercorp.com'
 
                     }
                 }
