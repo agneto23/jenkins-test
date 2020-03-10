@@ -64,7 +64,7 @@ pipeline {
                 ok "Ok"
                 submitter "alice,bob"
                 parameters {
-                    string(name: 'KEY_ISSUE', description: 'Key issue')
+                    string(name: 'KEY_ISSUE', description: 'Key issue', defaultValue: 'KISD-737')
                 }
             }
 
@@ -149,7 +149,7 @@ pipeline {
 
                     sh "pwd"
 
-                    dir("logintest") {
+                    dir("end-to-end") {
 
                         sh "pwd"
 
