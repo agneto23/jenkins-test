@@ -20,6 +20,8 @@ def getVersionTags(username) {
     
 }
 
+def exists = fileExists 'end-to-end'
+
 pipeline {
     agent none
     
@@ -149,8 +151,6 @@ pipeline {
                 container('katalon') {
 
                     sh "pwd"
-
-                    def exists = fileExists 'end-to-end'
 
                     if (exists) {
 
