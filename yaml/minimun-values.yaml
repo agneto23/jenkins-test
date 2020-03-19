@@ -42,17 +42,17 @@
 
 global:
   ingress:
-    configureCertmanager: false
+    configureCertmanager: true
     class: "nginx"
   hosts:
-    domain: example.com
+    domain: kruger.ec
     externalIP: 10.0.0.0
 # Don't use certmanager, we'll self-sign
 certmanager:
-  install: false
+  install: true
 # Use the `ingress` addon, not our Ingress (can't map 22/80/443)
 nginx-ingress:
-  enabled: false
+  enabled: true
 prometheus:
   install: false
 # GitLab Runner isn't a big fan of self-signed certificates
