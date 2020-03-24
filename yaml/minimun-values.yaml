@@ -45,7 +45,7 @@ global:
     configureCertmanager: true
     class: "nginx"
   hosts:
-    domain: kruger.ec
+    domain: example.com
     externalIP: 10.0.0.0
 # Don't use certmanager, we'll self-sign
 certmanager:
