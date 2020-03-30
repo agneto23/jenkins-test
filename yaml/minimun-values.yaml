@@ -47,9 +47,6 @@ global:
   hosts:
     domain: example.com
     externalIP: 10.0.0.0
-  rails:
-    bootsnap:
-      enabled: false
 # Don't use certmanager, we'll self-sign
 certmanager:
   install: true
