@@ -52,7 +52,7 @@ certmanager:
   install: true
 # Use the `ingress` addon, not our Ingress (can't map 22/80/443)
 nginx-ingress:
-  enabled: true
+  enabled: false
 prometheus:
   install: false
 # GitLab Runner isn't a big fan of self-signed certificates
