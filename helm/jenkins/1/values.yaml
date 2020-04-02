@@ -125,7 +125,8 @@ jenkins:
         mountPath: /var/run/docker.sock
     nodeSelector: {}
   persistence:
-    existingClaim: jenkins-data-pv-claim
+    #existingClaim: jenkins-data-pv-claim
+    storageClass: example-nfs
     size: "5Gi"
   networkPolicy:
     # Enable creation of NetworkPolicy resources.
