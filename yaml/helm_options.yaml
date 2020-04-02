@@ -1,0 +1,17 @@
+gitlab:
+  gitaly:
+    persistence:
+      storageClass: example-nfs
+      size: 10Gi
+postgresql:
+  persistence:
+    storageClass: example-nfs
+    size: 8Gi
+redis:
+  persistence:
+    storageClass: example-nfs
+    size: 5Gi
+minio:
+  persistence:
+    storageClass: example-nfs
+    size: 10Gi
