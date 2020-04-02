@@ -1,6 +1,6 @@
 jenkins:
   enabled: true
-#  namespaceOverride: jenkins
+  namespaceOverride: jenkins
   master:
     # Jenkins master name
     componentName: "jenkins-master"
@@ -125,7 +125,8 @@ jenkins:
         mountPath: /var/run/docker.sock
     nodeSelector: {}
   persistence:
-    size: "2Gi"
+    existingClaim: jenkins-data-pv-claim
+    size: "5Gi"
   networkPolicy:
     # Enable creation of NetworkPolicy resources.
     enabled: false
