@@ -1,0 +1,6 @@
+dependencies:
+- name: jenkins
+  version: 2.222.1
+  # repository: "https://kubernetes-charts.storage.googleapis.com"
+  repository: "@stable"
+  condition: jenkins.enabled

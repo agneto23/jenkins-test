@@ -1,0 +1,9 @@
+apiVersion: v1
+appVersion: "2.190.2"
+description: A Helm chart for Kubernetes
+name: kruger-jenkins
+version: 1.0.0
+maintainers:
+- name: jgranda
+  email: jgranda@ec.krugercorp.com
+icon: https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png

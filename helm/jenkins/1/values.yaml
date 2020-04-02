@@ -1,0 +1,139 @@
+jenkins:
+  enabled: true
+#  namespaceOverride: jenkins
+  master:
+    # Jenkins master name
+    componentName: "jenkins-master"
+    image: "jenkins/jenkins"
+    tag: "lts"
+    imagePullPolicy: "Always"
+    # Use basic security
+    useSecurity: true
+    adminUser: "admin"
+    adminPassword: "Jenkins"
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "1024Mi"
+      limits:
+        cpu: "1"
+        memory: "2500Mi"
+    javaOpts: "-Xms2500m -Xmx2500m"
+    # Jenkins master service annotations
+    serviceAnnotations:
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    # Jenkins master custom labels
+    deploymentLabels: {}
+    #   foo: bar
+    #   bar: foo
+    # Jenkins master service labels
+    serviceLabels: {}    
+    # Put labels on Jenkins master pod
+    podLabels: {}
+    # For minikube, set this to NodePort, elsewhere use LoadBalancer
+    # Use ClusterIP if your setup includes ingress controller
+    # serviceType: NodePort
+    # servicePort: 8080
+    # targetPort: 8080
+    # Used to create Ingress record (should used with ServiceType: ClusterIP)
+    # nodePort: 32000
+    serviceType: ClusterIP
+    # Enable Kubernetes Liveness and Readiness Probes
+    # ~ 2 minutes to allow Jenkins to restart when upgrading plugins. Set ReadinessTimeout to be shorter than LivenessTimeout.
+    healthProbes: true
+    healthProbesLivenessTimeout: 5
+    healthProbesReadinessTimeout: 5
+    healthProbeLivenessPeriodSeconds: 10
+    healthProbeReadinessPeriodSeconds: 10
+    healthProbeLivenessFailureThreshold: 5
+    healthProbeReadinessFailureThreshold: 3
+    healthProbeLivenessInitialDelay: 90
+    healthProbeReadinessInitialDelay: 60
+    # Host port to listen for agents
+    slaveListenerPort: 50000
+    # Allowed inbound IP addresses
+    loadBalancerSourceRanges:
+    - 0.0.0.0/0
+    # List of plugins to be install during Jenkins master start
+    installPlugins:
+      - kubernetes:1.21.3
+      - workflow-job:2.36
+      - workflow-aggregator:2.6
+      - credentials-binding:1.19
+      - git:latest
+      - blueocean:1.21.0
+      - workflow-multibranch:2.21
+      - gitlab-plugin:1.5.13
+      - bitbucket:1.1.11
+      - bitbucket-build-status-notifier:1.4.1
+      - slack:2.34
+      - timestamper:1.10
+      - ansicolor:0.6.2
+      - email-ext:2.68
+      - thinBackup:1.9
+      - performance:3.17
+      - configuration-as-code:1.33
+      - warnings-ng:7.2.0
+      - android-lint:2.6
+      - sonar:2.10
+      - role-strategy:2.15
+    ingress:
+      enabled: true
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/proxy-body-size: 50m
+        nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+        ingress.kubernetes.io/ssl-redirect: "false"
+        ingress.kubernetes.io/proxy-body-size: 50m
+        ingress.kubernetes.io/proxy-request-buffering: "off"
+#        service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+#        service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "https"
+#        service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "*"
+#        service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-west-2:842591922273:certificate/19407ece-2003-472e-9c02-282db5e46e01"
+      hostName: jenkins.example.com
+#      hostName: jenkins.192.168.99.104.nip.io
+#      tls:
+#        - hosts:
+#          - jenkins.krugernetes.com
+    # Used to approve a list of groovy functions in pipelines used the script-security plugin. Can be viewed under /scriptApproval
+    scriptApproval:
+      - "method groovy.json.JsonSlurperClassic parseText java.lang.String"
+      - "new groovy.json.JsonSlurperClassic"
+      - "staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods leftShift java.util.Map java.util.Map"
+      - "staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods split java.lang.String"
+    # The below two configuration-related values are deprecated and replaced by Jenkins Configuration as Code (see above
+    # JCasC key).  They will be deleted in an upcoming version.
+    customConfigMap: false
+  agent:
+    enabled: true
+    image: "jenkins/jnlp-slave"
+    tag: "3.35-5"
+    componentName: "jenkins-slave"
+    privileged: false
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "256Mi"
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+    # You may want to change this to true while testing a new image
+    alwaysPullImage: true
+    volumes:
+      - type: HostPath
+        hostPath: /var/run/docker.sock
+        mountPath: /var/run/docker.sock
+    nodeSelector: {}
+  persistence:
+    size: "2Gi"
+  networkPolicy:
+    # Enable creation of NetworkPolicy resources.
+    enabled: false
+    # For Kubernetes v1.4, v1.5 and v1.6, use 'extensions/v1beta1'
+    # For Kubernetes v1.7, use 'networking.k8s.io/v1'
+    apiVersion: networking.k8s.io/v1
+  ## Install Default RBAC roles and bindings
+  rbac:
+    create: true
+  serviceAccount:
+    name: cd-jenkins
