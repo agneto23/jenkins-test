@@ -19,6 +19,7 @@ metadata:
   labels:
     app: jenkins
   name: jenkins-data-pv-claim
+  namespace: jenkins
 spec:
   accessModes:
     - ReadWriteMany
