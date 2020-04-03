@@ -11,18 +11,20 @@
 #   storageClassName: gp2
 #   accessModes:
 #     - ReadWriteOnce
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "example-nfs"
-  labels:
-    app: jenkins
-  name: jenkins-data-pv-claim
-  namespace: jenkins
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
+
+
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+#  annotations:
+#    volume.beta.kubernetes.io/storage-class: "example-nfs"
+#  labels:
+#    app: jenkins
+#  name: jenkins-data-pv-claim
+#  namespace: jenkins
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 5Gi
