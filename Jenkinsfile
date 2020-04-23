@@ -32,9 +32,9 @@ pipeline {
         string(name: 'USERNAME', defaultValue: 'caaguilarn', description: 'Username repository')
     }
     
-    triggers {
-        bitbucketPush()
-    }
+//     triggers {
+//         bitbucketPush()
+//     }
 
     stages {
 
@@ -52,48 +52,48 @@ pipeline {
             }
         }
 
-        stage("Jira parameters") {
-
-            agent any
-
-            options {
-              timeout(time: 30, unit: 'SECONDS')
-            }
-
-            input {
-                message "Please Provide Parameters"
-                ok "Ok"
-                submitter "alice,bob"
-                parameters {
-                    string(name: 'KEY_ISSUE', description: 'Key issue', defaultValue: 'KISD-737')
-                }
-            }
-
-            steps {
-
-                script {
-
-                    def serverInfo = jiraGetServerInfo site: 'jirakruger', failOnError: true
-//                     echo serverInfo.data.toString()
-
-                    def issueKey = "${KEY_ISSUE}"
-
-                    def comments = jiraGetComments idOrKey: issueKey, site: 'jirakruger', failOnError: true
-                    echo comments.data.toString()
-
-                    def resultComments = new ArrayList()
-
-                    if (comments.data.comments == null || comments.data.comments.size == 0)
-                        resultComments.add("unable to fetch comments for ${env.JOB_NAME}")
-                    else
-                        resultComments.addAll(comments.data.comments.body)
-
-                    echo resultComments.join('\n').toString()
-
-                }
-
-            }
-        }
+//         stage("Jira parameters") {
+//
+//             agent any
+//
+//             options {
+//               timeout(time: 30, unit: 'SECONDS')
+//             }
+//
+//             input {
+//                 message "Please Provide Parameters"
+//                 ok "Ok"
+//                 submitter "alice,bob"
+//                 parameters {
+//                     string(name: 'KEY_ISSUE', description: 'Key issue', defaultValue: 'KISD-737')
+//                 }
+//             }
+//
+//             steps {
+//
+//                 script {
+//
+//                     def serverInfo = jiraGetServerInfo site: 'jirakruger', failOnError: true
+// //                     echo serverInfo.data.toString()
+//
+//                     def issueKey = "${KEY_ISSUE}"
+//
+//                     def comments = jiraGetComments idOrKey: issueKey, site: 'jirakruger', failOnError: true
+//                     echo comments.data.toString()
+//
+//                     def resultComments = new ArrayList()
+//
+//                     if (comments.data.comments == null || comments.data.comments.size == 0)
+//                         resultComments.add("unable to fetch comments for ${env.JOB_NAME}")
+//                     else
+//                         resultComments.addAll(comments.data.comments.body)
+//
+//                     echo resultComments.join('\n').toString()
+//
+//                 }
+//
+//             }
+//         }
 
         stage("Deployment parameters") {
 
@@ -123,57 +123,57 @@ pipeline {
             }
         }
 
-        stage('Docker katalon test') {
-            agent {
-                kubernetes {
-                      label 'continuous-delivery-builder'
-                      yaml """
-                apiVersion: v1
-                kind: Pod
-                metadata:
-                  labels:
-                    jenkins-agent: katalon-jnlp-slave
-                    jenkins/katalon-slave: true
-                spec:
-                  containers:
-                  - name: katalon
-                    image: katalonstudio/katalon
-                    imagePullPolicy: IfNotPresent
-                    args:
-                    - cat
-                    tty: true
-                """
-                }
-            }
-            steps {
-
-                container('katalon') {
-
-                    script {
-
-                        sh "pwd"
-
-                        if (fileExists('end-to-end')) {
-
-                            sh "pwd"
-
-                            echo "test version exec: ${env.VERSION_TAG}"
-
-                            echo 'Start katalon'
-
-                            sh 'katalonc.sh -projectPath="./end-to-end" -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/test" -apiKey="ae74a191-2cb0-4cf0-a61e-1b1d4ffd5774" -sendMail=caguilar@ec.krugercorp.com'
-
-                        } else {
-
-                            echo 'No exists directory'
-
-                        }
-
-                    }
-                }
-                
-            }
-        }
+//         stage('Docker katalon test') {
+//             agent {
+//                 kubernetes {
+//                       label 'continuous-delivery-builder'
+//                       yaml """
+//                 apiVersion: v1
+//                 kind: Pod
+//                 metadata:
+//                   labels:
+//                     jenkins-agent: katalon-jnlp-slave
+//                     jenkins/katalon-slave: true
+//                 spec:
+//                   containers:
+//                   - name: katalon
+//                     image: katalonstudio/katalon
+//                     imagePullPolicy: IfNotPresent
+//                     args:
+//                     - cat
+//                     tty: true
+//                 """
+//                 }
+//             }
+//             steps {
+//
+//                 container('katalon') {
+//
+//                     script {
+//
+//                         sh "pwd"
+//
+//                         if (fileExists('end-to-end')) {
+//
+//                             sh "pwd"
+//
+//                             echo "test version exec: ${env.VERSION_TAG}"
+//
+//                             echo 'Start katalon'
+//
+//                             sh 'katalonc.sh -projectPath="./end-to-end" -browserType="Firefox" -retry=0 -statusDelay=15 -testSuitePath="Test Suites/test" -apiKey="ae74a191-2cb0-4cf0-a61e-1b1d4ffd5774" -sendMail=caguilar@ec.krugercorp.com'
+//
+//                         } else {
+//
+//                             echo 'No exists directory'
+//
+//                         }
+//
+//                     }
+//                 }
+//
+//             }
+//         }
     }
     
     post {
