@@ -46,7 +46,7 @@ pipeline {
 
                 script {
 
-                    echo "Helloo ${params.USERNAME}"
+                    echo "Hello ${params.USERNAME}"
 
                 }
             }
