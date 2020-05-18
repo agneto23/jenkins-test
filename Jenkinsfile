@@ -34,8 +34,8 @@ pipeline {
               jenkins/angular-slave: true
           spec:
             containers:
-            - name: docker
-              image: docker:latest
+            - name: buildah
+              image: informaticsmatters/jenkins-slave-buildah-centos7
               securityContext:
                 privileged: true
               command:
@@ -147,24 +147,24 @@ pipeline {
 //         }
 
          stage('Build docker') {
-            agent {
-              docker {
-                image 'maven:3-alpine'
-              }
-            }
-
-            steps {
-              sh 'mvn --version'
-            }
-//
-//             steps {
-//               container('docker') {
-//                 echo 'Start build docker'
-//                 sh 'docker version'
-//                 sh "docker build --network=host -t ${env.DOCKER_REGISTRY_IMAGE} --file ./ci/docker/Dockerfile ."
-//                 sh "docker tag ${env.DOCKER_REGISTRY_IMAGE} ${env.DOCKER_REGISTRY_IMAGE_LATEST}"
+//             agent {
+//               docker {
+//                 image 'maven:3-alpine'
 //               }
 //             }
+//
+//             steps {
+//               sh 'mvn --version'
+//             }
+//
+            steps {
+              container('buildah') {
+                echo 'Start build docker'
+                sh 'buildah version'
+//                 sh "docker build --network=host -t ${env.DOCKER_REGISTRY_IMAGE} --file ./ci/docker/Dockerfile ."
+//                 sh "docker tag ${env.DOCKER_REGISTRY_IMAGE} ${env.DOCKER_REGISTRY_IMAGE_LATEST}"
+              }
+            }
           }
 
 //         stage('Docker katalon test') {
