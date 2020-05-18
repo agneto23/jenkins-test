@@ -1,28 +1,58 @@
 import groovy.json.JsonSlurper
 
-def getVersionTags(username) {
-
-    final APP_NAME = "jenkins-test"
-    
-    final USER_NAME = username
-
-    def cmd = [ 'bash', '-c', "curl https://api.bitbucket.org/2.0/repositories/${USER_NAME}/${APP_NAME}/refs/tags".toString()]
-    def result = cmd.execute().text
-
-    def slurper = new JsonSlurper()
-    def json = slurper.parseText(result)
-    def tags = new ArrayList()
-    if (json.values == null || json.values.size == 0)
-      tags.add("unable to fetch tags for ${env.JOB_NAME}")
-    else
-      tags.addAll(json.values.name)
-    return tags.join('\n')
-    
-}
+// def getVersionTags(username) {
+//
+//     final APP_NAME = "jenkins-test"
+//
+//     final USER_NAME = username
+//
+//     def cmd = [ 'bash', '-c', "curl https://api.bitbucket.org/2.0/repositories/${USER_NAME}/${APP_NAME}/refs/tags".toString()]
+//     def result = cmd.execute().text
+//
+//     def slurper = new JsonSlurper()
+//     def json = slurper.parseText(result)
+//     def tags = new ArrayList()
+//     if (json.values == null || json.values.size == 0)
+//       tags.add("unable to fetch tags for ${env.JOB_NAME}")
+//     else
+//       tags.addAll(json.values.name)
+//     return tags.join('\n')
+//
+// }
 
 
 pipeline {
-    agent none
+    agent {
+        kubernetes {
+                label 'angular-slave'
+                yaml """
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            labels:
+              jenkins-agent: angular8-jnlp-slave
+              jenkins/angular-slave: true
+          spec:
+            containers:
+            - name: docker
+              image: docker:latest
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
+              volumeMounts:
+              - mountPath: /var/run/docker.sock
+                name: docker-sock
+            volumes:
+              - name: docker-sock
+                hostPath:
+                  path: /var/run/docker.sock
+            imagePullSecrets:
+            - name: regdock
+          """
+        }
+    }
     
     environment {
         IMAGE_TAG = 'latest'
@@ -38,19 +68,19 @@ pipeline {
 
     stages {
 
-        stage('Example') {
-
-            agent any
-
-            steps {
-
-                script {
-
-                    echo "Hello ${params.USERNAME}"
-
-                }
-            }
-        }
+//         stage('Example') {
+//
+//             agent any
+//
+//             steps {
+//
+//                 script {
+//
+//                     echo "Hello ${params.USERNAME}"
+//
+//                 }
+//             }
+//         }
 
 //         stage("Jira parameters") {
 //
@@ -95,33 +125,44 @@ pipeline {
 //             }
 //         }
 
-        stage("Deployment parameters") {
+//         stage("Deployment parameters") {
+//
+//             agent any
+//
+//             options {
+//               timeout(time: 30, unit: 'SECONDS')
+//             }
+//
+//             input {
+//                 message "Please Provide Parameters"
+//                 ok "Ok"
+//                 submitter "alice,bob"
+//                 parameters {
+//                     choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
+//                 }
+//             }
+//
+//             steps {
+//
+//                 script {
+//
+//                     env.VERSION_TAG = "${VERSION_TAG}"
+//
+//                 }
+//
+//             }
+//         }
 
-            agent any
-        
-            options {
-              timeout(time: 30, unit: 'SECONDS') 
-            }
-            
-            input {
-                message "Please Provide Parameters"
-                ok "Ok"
-                submitter "alice,bob"
-                parameters {
-                    choice(name: 'VERSION_TAG', choices: getVersionTags("${params.USERNAME}"), description: 'Available versions')
-                }                
-            }
-            
+         stage('Build docker') {
             steps {
-
-                script {
-
-                    env.VERSION_TAG = "${VERSION_TAG}"
-
-                }
-
+              container('docker') {
+                echo 'Start build docker'
+                sh 'docker version'
+//                 sh "docker build --network=host -t ${env.DOCKER_REGISTRY_IMAGE} --file ./ci/docker/Dockerfile ."
+//                 sh "docker tag ${env.DOCKER_REGISTRY_IMAGE} ${env.DOCKER_REGISTRY_IMAGE_LATEST}"
+              }
             }
-        }
+          }
 
 //         stage('Docker katalon test') {
 //             agent {
@@ -176,23 +217,23 @@ pipeline {
 //         }
     }
     
-    post {
-
-		success {
-			echo 'Success job'
-			slackSend(
-				channel: "testchannel",
-				color: "good",
-				message: ":Success"
-			)
-		}        
-		failure {
-			echo "Error job"
-			slackSend (
-				channel: "testchannel", 
-				color: "danger", 
-				message: "Error"
-			)
-		}
-	}
+//     post {
+//
+// 		success {
+// 			echo 'Success job'
+// 			slackSend(
+// 				channel: "testchannel",
+// 				color: "good",
+// 				message: ":Success"
+// 			)
+// 		}
+// 		failure {
+// 			echo "Error job"
+// 			slackSend (
+// 				channel: "testchannel",
+// 				color: "danger",
+// 				message: "Error"
+// 			)
+// 		}
+// 	}
 }
