@@ -1,4 +1,4 @@
-import groovy.json.JsonSlurper
+// import groovy.json.JsonSlurper
 
 // def getVersionTags(username) {
 //
@@ -147,14 +147,22 @@ pipeline {
 //         }
 
          stage('Build docker') {
+            agent {
+              docker { image 'maven:3-alpine' }
+            }
+
             steps {
-              container('docker') {
-                echo 'Start build docker'
-                sh 'docker version'
+              sh 'mvn --version'
+            }
+//
+//             steps {
+//               container('docker') {
+//                 echo 'Start build docker'
+//                 sh 'docker version'
 //                 sh "docker build --network=host -t ${env.DOCKER_REGISTRY_IMAGE} --file ./ci/docker/Dockerfile ."
 //                 sh "docker tag ${env.DOCKER_REGISTRY_IMAGE} ${env.DOCKER_REGISTRY_IMAGE_LATEST}"
-              }
-            }
+//               }
+//             }
           }
 
 //         stage('Docker katalon test') {
