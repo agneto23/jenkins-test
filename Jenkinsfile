@@ -161,6 +161,7 @@ pipeline {
               container('buildah') {
                 echo 'Start build docker'
                 sh 'buildah version'
+                sh 'podman pull alpine/git:latest'
 //                 sh "docker build --network=host -t ${env.DOCKER_REGISTRY_IMAGE} --file ./ci/docker/Dockerfile ."
 //                 sh "docker tag ${env.DOCKER_REGISTRY_IMAGE} ${env.DOCKER_REGISTRY_IMAGE_LATEST}"
               }
