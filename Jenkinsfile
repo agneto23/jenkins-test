@@ -44,6 +44,16 @@ pipeline {
               volumeMounts:
               - mountPath: /var/run/docker.sock
                 name: docker-sock
+            - name: helm-kubectl
+              image: dtzar/helm-kubectl:latest
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
+              volumeMounts:
+              - mountPath: /var/run/docker.sock
+                name: docker-sock
             volumes:
               - name: docker-sock
                 hostPath:
@@ -155,7 +165,7 @@ pipeline {
 
          stage('Build docker') {
             steps {
-              container('docker') {
+              container('helm-kubectl') {
                 echo 'Start build docker'
                 sh 'docker version'
 //                 sh "docker build --network=host -t ${env.DOCKER_REGISTRY_IMAGE} --file ./ci/docker/Dockerfile ."
