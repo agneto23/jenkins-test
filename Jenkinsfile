@@ -148,7 +148,10 @@ pipeline {
 
          stage('Build docker') {
             agent {
-              docker { image 'maven:3-alpine' }
+              docker {
+                label 'dockertest'
+                image 'maven:3-alpine'
+              }
             }
 
             steps {
