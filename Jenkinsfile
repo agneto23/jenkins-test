@@ -167,6 +167,16 @@ pipeline {
             }
           }
 
+          stage('Publish registry image') {
+            steps {
+              container('buildah') {
+                openshift.withCluster() {
+                    sh "oc version"
+                }
+              }
+            }
+          }
+
 //         stage('Docker katalon test') {
 //             agent {
 //                 kubernetes {
