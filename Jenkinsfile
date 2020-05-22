@@ -169,13 +169,13 @@ pipeline {
 
           stage('Publish registry image 2') {
             steps {
-              container('buildah') {
+//               container('buildah') {
                 script {
                   openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
-                    sh "buildah version"
+                    sh "oc version"
                   }
                 }
-              }
+//               }
             }
           }
 
