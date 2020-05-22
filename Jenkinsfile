@@ -167,11 +167,13 @@ pipeline {
             }
           }
 
-          stage('Publish registry image') {
+          stage('Publish registry image 2') {
             steps {
               container('buildah') {
-                openshift.withCluster() {
-                    sh "oc version"
+                script {
+                  openshift.withCluster() {
+                      sh "oc version"
+                  }
                 }
               }
             }
