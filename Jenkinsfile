@@ -179,9 +179,9 @@ pipeline {
               container('openshift-cli') {
                 script {
                   openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
-                    sh "oc whoami"
-                    sh "oc login -u krug.caguilar -p Pronaca2k21 https://cdt01.pro.pronaca.com:6443"
                     sh "oc whoami -t"
+//                     sh "oc login -u krug.caguilar -p Pronaca2k21 https://cdt01.pro.pronaca.com:6443"
+//                     sh "oc whoami -t"
                   }
                 }
               }
