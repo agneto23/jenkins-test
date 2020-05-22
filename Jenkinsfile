@@ -41,6 +41,13 @@ pipeline {
               command:
               - cat
               tty: true
+            - name: openshift-cli
+              image: widerin/openshift-cli
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
             imagePullSecrets:
             - name: regdock
           """
@@ -169,13 +176,15 @@ pipeline {
 
           stage('Publish registry image 2') {
             steps {
-//               container('buildah') {
+              container('openshift-cli') {
                 script {
                   openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
-                    sh "oc version"
+                    sh "oc whoami"
+                    sh "oc login -u krug.caguilar -p Pronaca2k21 https://cdt01.pro.pronaca.com:6443"
+                    sh "oc whoami -t"
                   }
                 }
-//               }
+              }
             }
           }
 
