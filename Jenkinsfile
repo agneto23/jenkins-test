@@ -171,8 +171,8 @@ pipeline {
             steps {
               container('buildah') {
                 script {
-                  openshift.withCluster() {
-                      sh "oc version"
+                  openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
+                    sh "buildah version"
                   }
                 }
               }
