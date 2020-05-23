@@ -194,7 +194,7 @@ pipeline {
             steps {
               container('buildah') {
                 script {
-                  sh "buildah login -u krug.caguilar -p ${TOKEN_REGISTRY} https://cdocregpro.pronaca.com"
+                  sh "buildah login -u krug.caguilar -p password01 https://cdocregpro.pronaca.com"
                 }
               }
             }
