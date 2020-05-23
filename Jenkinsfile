@@ -154,26 +154,26 @@ pipeline {
 //             }
 //         }
 
-         stage('Build docker') {
-//             agent {
-//               docker {
-//                 image 'maven:3-alpine'
+//          stage('Build docker') {
+// //             agent {
+// //               docker {
+// //                 image 'maven:3-alpine'
+// //               }
+// //             }
+// //
+// //             steps {
+// //               sh 'mvn --version'
+// //             }
+// //
+//             steps {
+//               container('buildah') {
+//                 echo 'Start build docker'
+//                 sh 'buildah version'
+//                 sh "buildah bud -t mytest ./Dockerfile ."
+// //                 sh "docker tag ${env.DOCKER_REGISTRY_IMAGE} ${env.DOCKER_REGISTRY_IMAGE_LATEST}"
 //               }
 //             }
-//
-//             steps {
-//               sh 'mvn --version'
-//             }
-//
-            steps {
-              container('buildah') {
-                echo 'Start build docker'
-                sh 'buildah version'
-                sh "buildah bud -t mytest ./Dockerfile ."
-//                 sh "docker tag ${env.DOCKER_REGISTRY_IMAGE} ${env.DOCKER_REGISTRY_IMAGE_LATEST}"
-              }
-            }
-          }
+//           }
 
           stage('Publish registry image 2') {
             steps {
