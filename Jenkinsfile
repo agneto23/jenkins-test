@@ -57,6 +57,7 @@ pipeline {
     environment {
         IMAGE_TAG = 'latest'
         TOKEN_REGISTRY = 'token'
+        PRONACA_CREDS = credentials('pronaca-credentials')
     }
     
     parameters {
@@ -179,12 +180,11 @@ pipeline {
             steps {
               container('openshift-cli') {
                 script {
-                  openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
-                    TOKEN_REGISTRY = sh (
-                      script: 'oc whoami -t',
-                      returnStdout: true
-                    )
-                  }
+                  sh "oc login -u ${PRONACA_CREDS_USR} -p ${PRONACA_CREDS_PSW} https://cdt01.pro.pronaca.com:6443"
+                  TOKEN_REGISTRY = sh (
+                    script: 'oc whoami --token',
+                    returnStdout: true
+                  )
                 }
               }
             }
@@ -194,7 +194,7 @@ pipeline {
             steps {
               container('buildah') {
                 script {
-                  sh "buildah login -u krug.caguilar -p password01 https://cdocregpro.pronaca.com"
+                  sh "buildah login -u ${PRONACA_CREDS_USR} -p ${TOKEN_REGISTRY} https://cdocregpro.pronaca.com"
                 }
               }
             }
