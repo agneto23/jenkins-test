@@ -180,11 +180,13 @@ pipeline {
             steps {
               container('openshift-cli') {
                 script {
-                  sh "oc login -u ${PRONACA_CREDS_USR} -p ${PRONACA_CREDS_PSW} https://cdt01.pro.pronaca.com:6443"
-                  TOKEN_REGISTRY = sh (
-                    script: 'oc whoami --token',
-                    returnStdout: true
-                  )
+                  openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
+//                     sh "oc login -u ${PRONACA_CREDS_USR} -p ${PRONACA_CREDS_PSW} https://cdt01.pro.pronaca.com:6443"
+                    TOKEN_REGISTRY = sh (
+                      script: 'oc whoami --token',
+                      returnStdout: true
+                    )
+                  }
                 }
               }
             }
