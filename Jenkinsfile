@@ -56,7 +56,6 @@ pipeline {
     
     environment {
         IMAGE_TAG = 'latest'
-        TOKEN_REGISTRY = 'token'
         PRONACA_CREDS = credentials('pronaca-credentials')
     }
     
@@ -183,7 +182,8 @@ pipeline {
                   openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
 //                     sh "oc login -u ${PRONACA_CREDS_USR} -p ${PRONACA_CREDS_PSW} https://cdt01.pro.pronaca.com:6443"
                     sh "oc whoami --show-server"
-                    TOKEN_REGISTRY = sh (
+                    env.OPENSHIFT_REGISTRY = "cdocregpro.pronaca.com"
+                    env.TOKEN_REGISTRY = sh (
                       script: 'oc whoami -t',
                       returnStdout: true
                     )
@@ -197,7 +197,7 @@ pipeline {
             steps {
               container('buildah') {
                 script {
-                  sh "buildah login -p eyJhbGciOiJSUzI1NiIsImtpZCI6IjRjRXlwTXNxYXB2Q3I4cTNVOENYX2xZUDVlTzBEZjJObXI4QTNhUVRsNk0ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJqZW5raW5zIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tZjkybDciLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjYxYzk5MmZmLWU1YWItNDJiMS1iOTY1LWVlNjVjNGM4M2EzYiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpqZW5raW5zOmRlZmF1bHQifQ.s7r9X97t1F9_1lbDcMfrbro4lk9L4xD-Ctr3q5348yd4tfqvudYRGOB1-2cFfA2qe9_lF0lMw8uZHlvvw_vz4jXo5qMUH1YmOKOV7AL81Lk43xTQA6BUUPA_20nlxFvQnF2RZEf49Eukb_S4XE3uMHWSHITTrxZb-mN_qtuOmQniE9IkCvICkQMJhk4MWCw1dUGcUbFLpksIV_3L5zPszVc_ecfQelBTXLAYqsA_F4rWuU_e84cLlihCmqQxtKXk7sGRXyozImfg321-bZ5hz5vdSkaRBqi32vZ64bdJlbw_EITjgJZfvP672UFMVITz0jhmJSsKJ2qTHSQ6GaTWvQ -u ${PRONACA_CREDS_USR} cdocregpro.pronaca.com"
+                  sh "buildah login -p ${env.TOKEN_REGISTRY} -u ${PRONACA_CREDS_USR} https://${env.OPENSHIFT_REGISTRY}"
                 }
               }
             }
