@@ -179,8 +179,8 @@ pipeline {
             steps {
               container('openshift-cli') {
                 script {
-                  openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
-                    openshift.withProject('aba') {
+                  openshift.withCluster('pronaca-cluster') {
+                    openshift.withCredentials('pronaca-credentials') {
                         echo "Using project: ${openshift.project()}"
                         sh "oc whoami --show-server"
                         sh "oc whoami"
