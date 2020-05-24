@@ -186,7 +186,7 @@ pipeline {
                     env.TOKEN_REGISTRY = sh (
                       script: 'oc whoami -t',
                       returnStdout: true
-                    )
+                    ) + " ${env.OPENSHIFT_REGISTRY}"
                   }
                 }
               }
@@ -197,7 +197,7 @@ pipeline {
             steps {
               container('buildah') {
                 script {
-                  sh "buildah login -u ${PRONACA_CREDS_USR} -p ${env.TOKEN_REGISTRY} ${env.OPENSHIFT_REGISTRY}"
+                  sh "buildah login -u ${PRONACA_CREDS_USR} -p ${env.TOKEN_REGISTRY}"
                 }
               }
             }
