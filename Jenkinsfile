@@ -197,7 +197,7 @@ pipeline {
             steps {
               container('buildah') {
                 script {
-                  sh "buildah login -u ${PRONACA_CREDS_USR} ${env.OPENSHIFT_REGISTRY} -p ${env.TOKEN_REGISTRY}"
+                  sh "buildah login -u ${PRONACA_CREDS_USR} -p ${env.TOKEN_REGISTRY} ${env.OPENSHIFT_REGISTRY}"
                 }
               }
             }
