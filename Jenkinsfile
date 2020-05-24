@@ -183,6 +183,7 @@ pipeline {
                     openshift.withProject('aba') {
                         echo "Using project: ${openshift.project()}"
                         sh "oc whoami --show-server"
+                        sh "oc whoami"
 //                         sh "oc login -u krug.caguilar -p Pronaca2k21 https://cdt01.pro.pronaca.com:6443"
                         env.OPENSHIFT_REGISTRY = "cdocregpro.pronaca.com"
                         env.TOKEN_REGISTRY = sh (
