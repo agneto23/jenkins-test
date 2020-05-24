@@ -182,7 +182,7 @@ pipeline {
                   openshift.withCluster( 'pronaca-cluster', 'pronaca-credentials' ) {
                     openshift.withProject('aba') {
                         sh "oc whoami --show-server"
-                        sh "oc login -u krug.caguilar -p Pronaca2k21 https://cdt01.pro.pronaca.com:6443"
+//                         sh "oc login -u krug.caguilar -p Pronaca2k21 https://cdt01.pro.pronaca.com:6443"
                         env.OPENSHIFT_REGISTRY = "cdocregpro.pronaca.com"
                         env.TOKEN_REGISTRY = sh (
                           script: 'oc whoami -t',
