@@ -186,8 +186,8 @@ pipeline {
                     env.TOKEN_REGISTRY = sh (
                       script: 'oc whoami -t',
                       returnStdout: true
-                    )
-                    env.TOKEN_REGISTRY = "${env.TOKEN_REGISTRY}.trim() ${env.OPENSHIFT_REGISTRY}"
+                    ).trim()
+                    env.TOKEN_REGISTRY = "${env.TOKEN_REGISTRY} ${env.OPENSHIFT_REGISTRY}"
                     sh 'printenv'
                   }
                 }
