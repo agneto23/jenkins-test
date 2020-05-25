@@ -33,6 +33,7 @@ pipeline {
               jenkins-agent: angular8-jnlp-slave
               jenkins/angular-slave: true
           spec:
+            serviceAccountName: cd-jenkins
             containers:
             - name: buildah
               image: quay.io/buildah/stable
@@ -179,7 +180,7 @@ pipeline {
             steps {
               container('openshift-cli') {
                 script {
-                  openshift.withCluster('pronaca-cluster') {
+                  openshift.withCluster() {
                     openshift.withCredentials('pronaca-credentials') {
                         echo "Using project: ${openshift.project()}"
                         sh "oc whoami --show-server"
