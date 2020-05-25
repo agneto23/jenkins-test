@@ -180,12 +180,14 @@ pipeline {
             steps {
               container('openshift-cli') {
                 script {
-                  openshift.withCluster('pronaca-cluster') {
-                    openshift.withCredentials('pronaca-credentials') {
+                  openshift.withCluster('pronaca-cluster', 'pronaca-credentials') {
                         echo "Using project: ${openshift.project()}"
-                        sh "oc whoami --show-server"
+                        env.OPENSHIFT_SERVER = sh (
+                          script: 'oc whoami --show-server',
+                          returnStdout: true
+                        ).trim()
+                        sh "oc login -u krug.caguilar -p Pronaca2k21 --insecure-skip-tls-verify ${env.OPENSHIFT_SERVER}"
                         sh "oc whoami"
-                        sh "oc login -u krug.caguilar -p Pronaca2k21 --insecure-skip-tls-verify https://172.30.0.1:443"
                         env.OPENSHIFT_REGISTRY = "cdocregpro.pronaca.com"
                         env.TOKEN_REGISTRY = sh (
                           script: 'oc whoami -t',
@@ -193,7 +195,6 @@ pipeline {
                         ).trim()
                         env.TOKEN_REGISTRY = "${env.TOKEN_REGISTRY} ${env.OPENSHIFT_REGISTRY}"
                         sh 'printenv'
-                    }
                   }
                 }
               }
