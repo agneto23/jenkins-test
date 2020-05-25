@@ -185,7 +185,7 @@ pipeline {
                         echo "Using project: ${openshift.project()}"
                         sh "oc whoami --show-server"
                         sh "oc whoami"
-                        sh "oc login -u krug.caguilar -p Pronaca2k21"
+                        sh "oc login -u krug.caguilar -p Pronaca2k21 https://172.30.0.1:443"
                         env.OPENSHIFT_REGISTRY = "cdocregpro.pronaca.com"
                         env.TOKEN_REGISTRY = sh (
                           script: 'oc whoami -t',
