@@ -35,6 +35,14 @@ pipeline {
           spec:
             serviceAccountName: cd-jenkins
             containers:
+            - name: nodejs
+              image: cddnpro.pronaca.com/angular8-jnlp-slave:1.0.0
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
             - name: buildah
               image: quay.io/buildah/stable
               securityContext:
