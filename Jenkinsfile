@@ -181,12 +181,12 @@ pipeline {
               container('openshift-cli') {
                 script {
 //                   openshift.withCluster('pronaca-cluster-des', 'pronaca-credentials-des') {
-//                         echo "Using project: ${openshift.project()}"
+                        echo "Using project: ${openshift.project()}"
                         env.OPENSHIFT_SERVER = sh (
                           script: 'oc whoami --show-server',
                           returnStdout: true
                         ).trim()
-                        sh "oc login -u msatan -p msatan20 --insecure-skip-tls-verify https://mbmdes01.pronaca.com:8443"
+                        sh "oc login -u msatan -p msatan20  https://mbmdes01.pronaca.com:8443"
                         sh "oc whoami"
                         env.OPENSHIFT_REGISTRY = "cdocregdes.pronaca.com"
                         env.TOKEN_REGISTRY = sh (
