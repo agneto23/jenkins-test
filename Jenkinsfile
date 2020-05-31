@@ -75,11 +75,14 @@ pipeline {
       NEXUS_COMMON_CREDS = credentials('nexuspronaca')
       PRONACA_CREDS = credentials('pronaca-credentials')
       PRONACA_CREDS_DES = credentials('pronaca-credentials-des')
-      JAVA_HOME = tool 'jdk8'
-      scannerHome = tool 'SonarScanner 4.3.0';
+//       JAVA_HOME = tool 'jdk8'
+//       scannerHome = tool 'SonarScanner 4.3.0';
     }
 
     options {
+      disableConcurrentBuilds()
+      skipDefaultCheckout(true)
+      buildDiscarder(logRotator(numToKeepStr: '10'))
       timeout(time: 15, unit: 'MINUTES')
     }
     
