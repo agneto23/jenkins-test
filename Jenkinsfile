@@ -180,7 +180,7 @@ pipeline {
             steps {
               container('openshift-cli') {
                 script {
-                  openshift.withCluster('pronaca-cluster-des') {
+                  openshift.withCluster('https://mbmdes01.pronaca.com:8443') {
                         echo "Using project: ${openshift.project()}"
                         env.OPENSHIFT_SERVER = sh (
                           script: 'oc whoami --show-server',
