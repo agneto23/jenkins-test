@@ -16,13 +16,11 @@ pipeline {
     containers:
     - name: git
       image: alpine/git:latest
-      imagePullPolicy: IfNotPresent
       command:
       - cat
       tty: true
     - name: nodejs
       image: cddnpro.pronaca.com/angular8-jnlp-slave:1.0.0
-      imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true
       command:
@@ -30,7 +28,6 @@ pipeline {
       tty: true
     - name: buildah
       image: quay.io/buildah/stable
-      imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true
       command:
