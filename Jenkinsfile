@@ -180,22 +180,18 @@ pipeline {
             steps {
               container('openshift-cli') {
                 script {
-                  openshift.withCluster('https://mbmdes01.pronaca.com:8443') {
-                        echo "Using project: ${openshift.project()}"
+//                   openshift.withCluster('https://mbmdes01.pronaca.com:8443') {
+//                         echo "Using project: ${openshift.project()}"
                         env.OPENSHIFT_SERVER = sh (
                           script: 'oc whoami --show-server',
                           returnStdout: true
                         ).trim()
                         sh "oc login -u msatan -p msatan20 --insecure-skip-tls-verify https://mbmdes01.pronaca.com:8443"
-                        sh "oc whoami"
-                        env.OPENSHIFT_REGISTRY = "cdocregdes.pronaca.com"
                         env.TOKEN_REGISTRY = sh (
                           script: 'oc whoami -t',
                           returnStdout: true
                         ).trim()
-                        env.TOKEN_REGISTRY = "${env.TOKEN_REGISTRY} ${env.OPENSHIFT_REGISTRY}"
-                        sh 'printenv'
-                  }
+//                   }
                 }
               }
             }
@@ -205,7 +201,7 @@ pipeline {
             steps {
               container('buildah') {
                 script {
-                  sh "buildah login -u ${PRONACA_CREDS_USR} -p ${env.TOKEN_REGISTRY}"
+                  sh "buildah login -u ${PRONACA_CREDS_USR} -p ${env.TOKEN_REGISTRY} cdocregdes.pronaca.com"
                 }
               }
             }
