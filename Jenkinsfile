@@ -54,6 +54,14 @@ pipeline {
               command:
               - cat
               tty: true
+            - name: nodejs
+              image: cddnpro.pronaca.com/angular8-jnlp-slave:1.0.0
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
             imagePullSecrets:
             - name: regdock
           """
