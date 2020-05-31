@@ -195,7 +195,7 @@ pipeline {
                         ).trim()
                         env.TOKEN_REGISTRY = "${env.TOKEN_REGISTRY} ${env.OPENSHIFT_REGISTRY}"
                         sh 'printenv'
-//                   }
+                  }
                 }
               }
             }
