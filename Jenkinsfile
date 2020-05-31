@@ -180,8 +180,8 @@ pipeline {
             steps {
               container('openshift-cli') {
                 script {
-                  openshift.withCluster('pronaca-cluster-des', 'pronaca-credentials-des') {
-                        echo "Using project: ${openshift.project()}"
+//                   openshift.withCluster('pronaca-cluster-des', 'pronaca-credentials-des') {
+//                         echo "Using project: ${openshift.project()}"
                         env.OPENSHIFT_SERVER = sh (
                           script: 'oc whoami --show-server',
                           returnStdout: true
@@ -195,7 +195,7 @@ pipeline {
                         ).trim()
                         env.TOKEN_REGISTRY = "${env.TOKEN_REGISTRY} ${env.OPENSHIFT_REGISTRY}"
                         sh 'printenv'
-                  }
+//                   }
                 }
               }
             }
