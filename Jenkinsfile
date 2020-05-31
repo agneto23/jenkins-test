@@ -23,45 +23,67 @@
 
 pipeline {
     agent {
-        kubernetes {
-                label 'angular-slave'
-                yaml """
-          apiVersion: v1
-          kind: Pod
-          metadata:
-            labels:
-              jenkins-agent: angular8-jnlp-slave
-              jenkins/angular-slave: true
-          spec:
-            serviceAccountName: cd-jenkins
-            containers:
-            - name: buildah
-              image: quay.io/buildah/stable
-              securityContext:
-                privileged: true
-              command:
-              - cat
-              tty: true
-            - name: openshift-cli
-              image: widerin/openshift-cli
-              securityContext:
-                privileged: true
-              command:
-              - cat
-              tty: true
-            imagePullSecrets:
-            - name: regdock
-          """
-        }
+      kubernetes {
+        label 'angular-slave'
+        yaml """
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    labels:
+      jenkins-agent: angular8-jnlp-slave
+      jenkins/angular-slave: true
+  spec:
+    serviceAccount: cd-jenkins
+    containers:
+    - name: git
+      image: alpine/git:latest
+      imagePullPolicy: IfNotPresent
+      command:
+      - cat
+      tty: true
+    - name: nodejs
+      image: cddnpro.pronaca.com/angular8-jnlp-slave:1.0.0
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        privileged: true
+      command:
+      - cat
+      tty: true
+    - name: buildah
+      image: quay.io/buildah/stable
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        privileged: true
+      command:
+      - cat
+      tty: true
+    - name: openshift-cli
+      image: widerin/openshift-cli
+      securityContext:
+        privileged: true
+      command:
+      - cat
+      tty: true
+    imagePullSecrets:
+    - name: regdock
+  """
+      }
     }
-    
+
     environment {
-        IMAGE_TAG = 'latest'
-        PRONACA_CREDS = credentials('pronaca-credentials')
+      slackNotificationChannel = 'aba'
+      NEXUS_COMMON_CREDS = credentials('nexuspronaca')
+      PRONACA_CREDS = credentials('pronaca-credentials')
+      PRONACA_CREDS_DES = credentials('pronaca-credentials-des')
+      JAVA_HOME = tool 'jdk8'
+      scannerHome = tool 'SonarScanner 4.3.0';
     }
-    
-    parameters {
-        string(name: 'USERNAME', defaultValue: 'caaguilarn', description: 'Username repository')
+
+    options {
+      disableConcurrentBuilds()
+      skipDefaultCheckout(true)
+      buildDiscarder(logRotator(numToKeepStr: '10'))
+      timeout(time: 15, unit: 'MINUTES')
     }
     
 //     triggers {
