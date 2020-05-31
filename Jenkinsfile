@@ -1,48 +1,57 @@
-@Library('devops-library') _
+// import groovy.json.JsonSlurper
+
+// def getVersionTags(username) {
+//
+//     final APP_NAME = "jenkins-test"
+//
+//     final USER_NAME = username
+//
+//     def cmd = [ 'bash', '-c', "curl https://api.bitbucket.org/2.0/repositories/${USER_NAME}/${APP_NAME}/refs/tags".toString()]
+//     def result = cmd.execute().text
+//
+//     def slurper = new JsonSlurper()
+//     def json = slurper.parseText(result)
+//     def tags = new ArrayList()
+//     if (json.values == null || json.values.size == 0)
+//       tags.add("unable to fetch tags for ${env.JOB_NAME}")
+//     else
+//       tags.addAll(json.values.name)
+//     return tags.join('\n')
+//
+// }
+
 
 pipeline {
     agent {
       kubernetes {
         label 'angular-slave'
         yaml """
-  apiVersion: v1
-  kind: Pod
-  metadata:
-    labels:
-      jenkins-agent: angular8-jnlp-slave
-      jenkins/angular-slave: true
-  spec:
-    serviceAccount: cd-jenkins
-    containers:
-    - name: git
-      image: alpine/git:latest
-      command:
-      - cat
-      tty: true
-    - name: nodejs
-      image: cddnpro.pronaca.com/angular8-jnlp-slave:1.0.0
-      securityContext:
-        privileged: true
-      command:
-      - cat
-      tty: true
-    - name: buildah
-      image: quay.io/buildah/stable
-      securityContext:
-        privileged: true
-      command:
-      - cat
-      tty: true
-    - name: openshift-cli
-      image: widerin/openshift-cli
-      securityContext:
-        privileged: true
-      command:
-      - cat
-      tty: true
-    imagePullSecrets:
-    - name: regdock
-  """
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            labels:
+              jenkins-agent: angular8-jnlp-slave
+              jenkins/angular-slave: true
+          spec:
+            serviceAccountName: cd-jenkins
+            containers:
+            - name: buildah
+              image: quay.io/buildah/stable
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
+            - name: openshift-cli
+              image: widerin/openshift-cli
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
+            imagePullSecrets:
+            - name: regdock
+          """
       }
     }
 
