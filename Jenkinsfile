@@ -35,11 +35,8 @@ pipeline {
           spec:
             serviceAccountName: cd-jenkins
             containers:
-            - name: nodejs
-              image: cddnpro.pronaca.com/angular8-jnlp-slave:1.0.0
-              imagePullPolicy: IfNotPresent
-              securityContext:
-                privileged: true
+            - name: git
+              image: alpine/git:latest
               command:
               - cat
               tty: true
