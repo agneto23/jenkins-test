@@ -55,7 +55,7 @@ pipeline {
               - cat
               tty: true
             - name: nodejs
-              image: cdocregpro.pronaca.com/jenkins/angular8-jnlp-slave:1.0.0
+              image: cddnpro.pronaca.com/angular8-jnlp-slave:1.0.0
               imagePullPolicy: IfNotPresent
               securityContext:
                 privileged: true
