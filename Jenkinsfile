@@ -191,7 +191,7 @@ pipeline {
                           script: 'oc whoami --show-server',
                           returnStdout: true
                         ).trim()
-                        sh "oc login -u msatan -p msatan20 --insecure-skip-tls-verify https://192.168.121.1:8443"
+                        sh "oc login -u msatan -p msatan20 --insecure-skip-tls-verify https://192.168.121.1:443"
                         env.TOKEN_REGISTRY = sh (
                           script: 'oc whoami -t',
                           returnStdout: true
