@@ -54,6 +54,14 @@ pipeline {
               command:
               - cat
               tty: true
+            - name: nodejs
+              image: cddnpro.pronaca.com/angular8-jnlp-slave:1.0.0
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
             imagePullSecrets:
             - name: regdock
           """
@@ -191,7 +199,7 @@ pipeline {
                           script: 'oc whoami --show-server',
                           returnStdout: true
                         ).trim()
-                        sh "oc login -u msatan -p msatan20 --insecure-skip-tls-verify https://192.168.121.1:443"
+                        sh "oc login -u msatan -p msatan20 --insecure-skip-tls-verify https://mbmdes01.pronaca.com:8443"
                         env.TOKEN_REGISTRY = sh (
                           script: 'oc whoami -t',
                           returnStdout: true
