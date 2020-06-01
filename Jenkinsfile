@@ -70,7 +70,7 @@ pipeline {
 
     environment {
         IMAGE_TAG = 'latest'
-        PRONACA_CREDS = credentials('pronaca-credentials')
+//         PRONACA_CREDS = credentials('pronaca-credentials')
     }
 
     parameters {
