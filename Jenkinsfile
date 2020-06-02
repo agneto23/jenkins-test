@@ -54,6 +54,14 @@ pipeline {
               command:
               - cat
               tty: true
+            - name: nodejs
+              image: cdocregpro.pronaca.com/jenkins/angular8-jnlp-slave:1.0.0
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                privileged: true
+              command:
+              - cat
+              tty: true
             imagePullSecrets:
             - name: regopen
           """
@@ -192,11 +200,11 @@ pipeline {
                           returnStdout: true
                         ).trim()
 //                         sh "oc login -u krug.caguilar -p Pronaca2k21 https://cdt01.pro.pronaca.com:6443"
-                        sh "oc login -u msatan -p msatan20 https://mbmdes01.pronaca.com:8443"
-//                         env.TOKEN_REGISTRY = sh (
-//                           script: 'oc whoami -t',
-//                           returnStdout: true
-//                         ).trim()
+                        sh "oc login -u msatan -p msatan20 https://mbmdes01.pronaca.com:8443/"
+                        env.TOKEN_REGISTRY = sh (
+                          script: 'oc whoami -t',
+                          returnStdout: true
+                        ).trim()
 //                   }
                 }
               }
