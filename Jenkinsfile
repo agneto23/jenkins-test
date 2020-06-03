@@ -200,7 +200,7 @@ pipeline {
                           returnStdout: true
                         ).trim()
 //                         sh "oc login -u krug.caguilar -p Pronaca2k21 https://cdt01.pro.pronaca.com:6443"
-                        sh "oc login -u msatan -p msatan20 https://mbmdes01.pronaca.com:8443/"
+                        sh "oc login -u msatan -p msatan20 --insecure-skip-tls-verify https://mbmdes01.pronaca.com:8443/"
                         env.TOKEN_REGISTRY = sh (
                           script: 'oc whoami -t',
                           returnStdout: true
