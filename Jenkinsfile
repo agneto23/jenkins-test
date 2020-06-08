@@ -68,6 +68,13 @@ pipeline {
       }
     }
 
+    options {
+      disableConcurrentBuilds()
+      skipDefaultCheckout(true)
+      buildDiscarder(logRotator(numToKeepStr: '10'))
+      timeout(time: 15, unit: 'MINUTES')
+    }
+
     environment {
         IMAGE_TAG = 'latest'
 //         PRONACA_CREDS = credentials('pronaca-credentials')
