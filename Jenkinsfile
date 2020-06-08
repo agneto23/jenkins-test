@@ -222,7 +222,7 @@ pipeline {
             steps {
               container('buildah') {
                 script {
-                  sh "buildah login -u msatan -p {env.TOKEN_REGISTRY} https://cdocregpro.pronaca.com"
+                  sh "buildah login -u msatan -p ${env.TOKEN_REGISTRY} https://cdocregpro.pronaca.com"
                 }
               }
             }
