@@ -273,7 +273,6 @@ pipeline {
 //             }
 //         }
     }
-    cleanWs()
     post {
 
 		success {
