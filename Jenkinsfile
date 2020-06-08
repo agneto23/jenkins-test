@@ -273,24 +273,14 @@ pipeline {
 //             }
 //         }
     }
-    
-//     post {
-//
-// 		success {
-// 			echo 'Success job'
-// 			slackSend(
-// 				channel: "testchannel",
-// 				color: "good",
-// 				message: ":Success"
-// 			)
-// 		}
-// 		failure {
-// 			echo "Error job"
-// 			slackSend (
-// 				channel: "testchannel",
-// 				color: "danger",
-// 				message: "Error"
-// 			)
-// 		}
-// 	}
+    cleanWs()
+    post {
+
+		success {
+			cleanWs()
+		}
+		failure {
+			cleanWs()
+		}
+	}
 }
